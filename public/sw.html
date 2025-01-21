@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Worker Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    button {
+      padding: 5px 10px;
+      background-color: #ff5555;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #ff2222;
+    }
+  </style>
+</head>
+<body>
+  <h1>Service Worker Manager</h1>
+  <p>This page lists all registered Service Workers for this site and allows you to unregister them.</p>
+  
+  <div id="sw-list">
+    <p>Loading registered Service Workers...</p>
+  </div>
+
+  <script>
+    // Function to display registered Service Workers
+    async function loadServiceWorkers() {
+      const swListContainer = document.getElementById('sw-list');
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        if (registrations.length === 0) {
+          swListContainer.innerHTML = '<p>No Service Workers are registered for this site.</p>';
+          return;
+        }
+        
+        // Create a table to display the SW list
+        let tableHtml = `
+          <table>
+            <thead>
+              <tr>
+                <th>Scope</th>
+                <th>Options</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        
+        registrations.forEach((registration, index) => {
+          tableHtml += `
+            <tr>
+              <td>${registration.scope}</td>
+              <td>
+                <button onclick="unregisterServiceWorker(${index})">Unregister</button>
+              </td>
+            </tr>
+          `;
+        });
+
+        tableHtml += `
+            </tbody>
+          </table>
+        `;
+
+        swListContainer.innerHTML = tableHtml;
+      } else {
+        swListContainer.innerHTML = '<p>Your browser does not support Service Workers.</p>';
+      }
+    }
+
+    // Function to unregister a specific Service Worker
+    async function unregisterServiceWorker(index) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      if (registrations[index]) {
+        const scope = registrations[index].scope;
+        const success = await registrations[index].unregister();
+        if (success) {
+          alert(`Service Worker with scope '${scope}' has been unregistered.`);
+        } else {
+          alert(`Failed to unregister Service Worker with scope '${scope}'.`);
+        }
+        loadServiceWorkers(); // Refresh the list
+      } else {
+        alert('Invalid Service Worker index.');
+      }
+    }
+
+    // Load Service Workers on page load
+    window.onload = loadServiceWorkers;
+  </script>
+</body>
+</html>
