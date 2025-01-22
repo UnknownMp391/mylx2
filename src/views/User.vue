@@ -13,7 +13,7 @@ import 'mdui/components/divider.js';
 
 import ProfileCard from '@/components/me/ProfileCard.vue'
 import { useApiStore } from '@/stores/api.js'
-import { mduiSnackbar, mduiAlert, escapeAndFormatText, getQueryVariable } from '@/utils.js'
+import { mduiSnackbar, mduiAlert, escapeAndFormatText, getQueryVariable, formatUnixTimestamp } from '@/utils.js'
 
 const router = useRouter()
 const api = useApiStore()
@@ -32,14 +32,14 @@ const posts = ref([])
 const last = ref(0)
 const more = ref(false)
 
-var accountInfo = null
-var accountCount = null
+var userInfo = null
+var userCount = null
 
 
 const userId = getQueryVariable('userId')
 
 async function fetchPost() {
-	const result = await api.getAccountPost(userId);
+	const result = await api.getUserPost(userId);
 	if (result.code == 1 && result.status == 1) {
 		last.value = result.last
 		more.value = result.more
@@ -64,13 +64,13 @@ onMounted(async () => {
 	if (userId) {
 		var result = await api.getUserInfo(userId, true)
 		if (result.code == 1 && result.status == 1) {
-			accountInfo = result.accountInfo
-			accountCount = result.accountCount
-			nickName.value = accountInfo.nickName
-			avatarUrl.value = await api.getAvatarUrl(accountInfo.avatar)
-			postCount.value = accountCount.postCount
+			userInfo = result.userInfo
+			userCount = result.userCount
+			nickName.value = userInfo.nickName
+			avatarUrl.value = await api.getAvatarUrl(userInfo.avatar)
+			postCount.value = userCount.postCount
 			isLoaded.value = true
-			result = await api.getUserPost(accountInfo.userId, null, last.value);
+			result = await api.getUserPost(userInfo.userId, null, last.value);
 			if (result.code == 1 && result.status == 1) {
 				last.value = result.last
 				more.value = result.more
@@ -124,6 +124,7 @@ onBeforeUnmount(() => {
 		<mdui-divider style="margin: 0px auto 2px;"></mdui-divider>
 		<mdui-card v-for="(item, index) in posts" :key="item.postId">
 			<div v-if="item.title" style="font-size: 1.3em; margin: 10px" @click="router.push(`/post?postId=${item.postId}`)"><strong>{{ item.title }}</strong></div>
+			<div class="typescale-label-small" style="margin: 6px 10px 0px; color: rgb(var(--mdui-color-on-surface-variant));" @click="router.push(`/post?postId=${item.postId}`)">{{ formatUnixTimestamp(item.createdAt) }}</div>
 			<div style="text-indent: 0em; margin: 10px;" @click="router.push(`/post?postId=${item.postId}`)">
 				<div style="white-space: pre-wrap;" v-html="escapeAndFormatText(item.content)"></div>
 			</div>

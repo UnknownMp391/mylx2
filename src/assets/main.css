@@ -1,5 +1,5 @@
 @import 'mdui/mdui.css';
-
+@import './typescale.css';
 body {
 	font-family: Roboto,Noto Sans SC,PingFang SC,Lantinghei SC,Microsoft Yahei,Hiragino Sans GB,"Microsoft Sans Serif",WenQuanYi Micro Hei,sans-serif;
 	background-color: rgb(var(--mdui-color-background));

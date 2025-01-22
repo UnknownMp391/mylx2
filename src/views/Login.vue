@@ -50,7 +50,7 @@ onMounted(async () => {
 		<div class="title">登录到 墨宇留香</div>
 	</div>
 	<mdui-card style="padding: 10px; width: 100%;">
-		<mdui-text-field label="用户名" type="text" v-model="userName" clearable :disabled="isLogging" maxlength="64" counter></mdui-text-field><br/><br/>
+		<mdui-text-field label="用户名" type="text" v-model="userName" clearable :disabled="isLogging" maxlength="64" counter></mdui-text-field>
 		<mdui-text-field label="密码" type="password" v-model="password" toggle-password clearable :disabled="isLogging"></mdui-text-field><br/><br/>
 		<div class="bar">
 			<mdui-button variant="tonal" @click="router.replace('/register')">注册</mdui-button>

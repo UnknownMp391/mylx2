@@ -10,7 +10,7 @@ export const useApiStore = defineStore('api', () => {
 	var endpoint = "https://mylx2-api.unknownmp.lol/"
 	if (import.meta.env.MODE === 'development') {
 		console.log('开发模式')
-		endpoint = "http://10.0.0.2:32020/"
+		endpoint = "http://10.0.0.2:35501/"
 	}
 	var inited = false
 	var initializing = false
@@ -206,6 +206,7 @@ export const useApiStore = defineStore('api', () => {
 			if (result.status == 1) {
 				data.content = result.content
 				data.title = result.title
+				data.createdAt = result.createdAt
 				data.authorInfo = result.authorInfo
 			}
 		} catch (error) {
@@ -260,10 +261,10 @@ export const useApiStore = defineStore('api', () => {
 		}
 		try {
 			const result = await apiGet("recommend/1", rdata);
-			data.status = result.status
+			data.status = result.status	 
 			data.code = 1
 			if (result.status == 1) {
-				data.recommends = result.posts
+				data.recommends = result.recommends
 				data.last = result.last
 				data.more = result.more
 			}
@@ -344,14 +345,14 @@ export const useApiStore = defineStore('api', () => {
 			code: 0,
 		}
 		try {
-			const result = await apiGet("account/info",{
+			const result = await apiGet("user/info",{
 				userId, accountCount
 			})
 			data.status = result.status
 			data.code = 1
 			if (result.status == 1) {
-				data.accountInfo = result.accountInfo
-				data.accountCount = result.accountCount
+				data.userInfo = result.userInfo
+				data.userCount = result.userCount
 			}
 		} catch (error) {
 			if (error.name == 'AxiosError') {
@@ -376,7 +377,7 @@ export const useApiStore = defineStore('api', () => {
 			code: 0,
 		}
 		try {
-			const result = await apiGet("post/account", rdata);
+			const result = await apiGet("post/user", rdata);
 			data.status = result.status
 			data.code = 1
 			if (result.status == 1) {

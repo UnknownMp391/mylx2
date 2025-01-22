@@ -14,7 +14,7 @@ import 'mdui/components/menu-item.js';
 import 'mdui/components/dropdown.js';
 import '@mdui/icons/arrow-forward.js';
 
-import { mduiSnackbar, mduiAlert, escapeAndFormatText, getQueryVariable } from '@/utils.js'
+import { mduiSnackbar, mduiAlert, escapeAndFormatText, getQueryVariable, formatUnixTimestamp } from '@/utils.js'
 import { useApiStore } from '@/stores/api.js'
 const api = useApiStore()
 
@@ -35,6 +35,7 @@ const isCommenting = ref(false)
 const authorAvatarUrl = ref('')
 const authorName = ref('')
 const authorId = ref(0)
+const createdAt = ref(0)
 const content = ref('')
 const title = ref('')
 
@@ -109,6 +110,7 @@ onMounted(async () => {
 			title.value = post.title
 			authorName.value = post.authorInfo.nickName
 			authorId.value = post.authorInfo.userId
+			createdAt.value = post.createdAt
 			if ( post.authorInfo.avatar ) {
 				authorAvatarUrl.value = `${api.config.ossEndpoint}/${post.authorInfo.avatar}`
 			} else {
@@ -136,6 +138,7 @@ onMounted(async () => {
 		<div v-if="title" style="font-size: 2em; margin: 10px"><strong>{{ title }}</strong></div>
 		<mdui-divider v-if="title"></mdui-divider>
 		<AccountBar :avatarUrl="authorAvatarUrl" :name="authorName" @click="router.push(`/user?userId=${authorId}`)"/>
+		<div class="typescale-label-small" style="margin: 6px 10px 10px; color: rgb(var(--mdui-color-on-surface-variant));">{{ formatUnixTimestamp(createdAt) }}</div>
 		<mdui-divider></mdui-divider>
 		<div style="text-indent: 0em; margin: 10px;">
 			<div style="white-space: pre-wrap;" v-html="content"></div>

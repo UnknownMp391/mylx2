@@ -6,7 +6,7 @@ import { setColorScheme } from 'mdui/functions/setColorScheme.js'
 
 export const useThemeStore = defineStore('homePage', () => {
 	// 定义响应式状态
-	const mode = ref('light') // 默认主题
+	const mode = ref('dark') // 默认主题
 	const color = ref('#7F3C5C70') // 默认颜色
 
 	// 定义 actions

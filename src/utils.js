@@ -93,4 +93,28 @@ function objectToQueryString(obj, parentKey = '') {
 	return parts.join('&')
 }
 
-export { mduiSnackbar, mduiAlert, getQueryVariable, escapeAndFormatText, setCookie, getCookie, objectToQueryString }
+function formatUnixTimestamp(unixTimestamp, timeZone) {
+    const date = new Date(unixTimestamp * 1000); // 将 UNIX 时间戳转换为毫秒
+    const options = {
+        timeZone: timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone, // 使用指定时区或浏览器本地时区
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false, // 24小时制
+    };
+
+    const formatter = new Intl.DateTimeFormat('en-US', options);
+    const parts = formatter.formatToParts(date);
+
+    const formatMap = {};
+    parts.forEach(({ type, value }) => {
+        formatMap[type] = value;
+    });
+
+    return `${formatMap.year}-${formatMap.month}-${formatMap.day} ${formatMap.hour}:${formatMap.minute}:${formatMap.second}`;
+}
+
+export { mduiSnackbar, mduiAlert, getQueryVariable, escapeAndFormatText, setCookie, getCookie, objectToQueryString, formatUnixTimestamp }

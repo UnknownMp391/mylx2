@@ -9,7 +9,7 @@ import 'mdui/components/dropdown.js';
 import 'mdui/components/linear-progress.js';
 
 import { useApiStore } from '@/stores/api.js'
-import { mduiSnackbar, mduiAlert, escapeAndFormatText, getQueryVariable } from '@/utils.js'
+import { mduiSnackbar, mduiAlert, escapeAndFormatText, getQueryVariable, formatUnixTimestamp } from '@/utils.js'
 
 import { useHomePageScrollStore, useRecommendStore } from '@/stores/homePage.js'
 
@@ -49,7 +49,6 @@ const onScroll = throttle(() => {
 	const clientHeight = document.documentElement.clientHeight;
 
 	if (Math.abs(scrollTop + clientHeight - scrollHeight) < 10) {
-		mduiSnackbar('滑动到底部了')
 		fetchRecommend()
 	}
 }, 500)
@@ -76,6 +75,7 @@ onBeforeUnmount(() => {
 		<mdui-card v-for="item in recommends" :key="item.postId">
 			<div v-if="item.title" style="font-size: 2em; margin: 10px" @click="router.push(`/post?postId=${item.postId}`)"><strong>{{ item.title }}</strong></div>
 			<AccountBar :avatarUrl="item.avatar" :name="escapeAndFormatText(item.authorInfo.nickName)"  @click="router.push(`/user?userId=${item.authorInfo.userId}`)"/>
+			<div class="typescale-label-small" style="margin: 6px 10px 0px; color: rgb(var(--mdui-color-on-surface-variant));" @click="router.push(`/post?postId=${item.postId}`)">{{ formatUnixTimestamp(item.createdAt) }}</div>
 			<div style="text-indent: 0em; margin: 10px;" @click="router.push(`/post?postId=${item.postId}`)">
 				<div style="white-space: pre-wrap;" v-html="escapeAndFormatText(item.content)"></div>
 			</div>
