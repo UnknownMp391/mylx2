@@ -79,7 +79,7 @@ onMounted(async () => {
 </script>
 
 <template>
-	<mdui-text-field variant="outlined" v-model="editTemp.title" label="文章标题" :disabled="isPosting"></mdui-text-field>
+	<mdui-text-field variant="outlined" v-model="editTemp.title" label="文章标题" :disabled="isPosting" maxlength="80" counter></mdui-text-field>
 	<mdui-divider></mdui-divider>
 	<mdui-text-field variant="filled" label="正文" v-model="editTemp.content" autosize min-rows="2" max-rows="8" :disabled="isPosting"></mdui-text-field>
 	<!--<mdui-button class="button" variant="elevated" :disabled="isPosting">选择合集</mdui-button>-->

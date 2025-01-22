@@ -55,6 +55,7 @@ const onScroll = throttle(() => {
 }, 500)
 
 onMounted(async () =>{
+	await api.init()
 	nextTick(async () => {
 		window.scrollTo(0, homePageScrollStore.getPosition('recommend'))
 		await fetchRecommend()

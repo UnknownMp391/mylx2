@@ -123,6 +123,8 @@ onMounted(async () => {
 		</mdui-card>
 		<mdui-card>
 			<p><span style="font-size: 1.5em"><strong>账号管理</strong></span></p>
+			<mdui-button class="tool-button" variant="filled" full-width @click="router.push('/account/profile')">个人资料编辑</mdui-button>
+			<mdui-divider></mdui-divider>
 			<mdui-button class="tool-button" variant="filled" full-width>修改密码</mdui-button>
 			<mdui-dropdown trigger="contextmenu">
 				<mdui-button slot="trigger" class="tool-button" variant="text" full-width @click="logout">
@@ -153,8 +155,8 @@ onMounted(async () => {
 			<li>查看评论<div style="flex: 1;"/>已完成✅</li>
 			<li>删除评论<div style="flex: 1;"/>已完成✅</li>
 			<li>个人主页<div style="flex: 1;"/>已完成✅</li>
+			<li>个人资料编辑<div style="flex: 1;"/>已完成✅</li>
 			<li>文章编辑<div style="flex: 1;"/>已计划😋</li>
-			<li>个人资料编辑<div style="flex: 1;"/>已计划😋</li>
 			<li>合集<div style="flex: 1;"/>已计划😋</li>
 			<li>合集主页<div style="flex: 1;"/>已计划😋</li>
 			<li>评论编辑<div style="flex: 1;"/>未计划😱</li>

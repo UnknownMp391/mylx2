@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
 
 import { throttle } from 'mdui/functions/throttle.js';
 import { confirm } from 'mdui/functions/confirm.js';
@@ -61,7 +60,7 @@ const onScroll = throttle(() => {
 	}
 }, 500)
 
-onMounted(async () =>{
+onMounted(async () => {
 	if (userId) {
 		var result = await api.getUserInfo(userId, true)
 		if (result.code == 1 && result.status == 1) {

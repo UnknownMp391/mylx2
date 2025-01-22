@@ -394,6 +394,33 @@ export const useApiStore = defineStore('api', () => {
 		}
 		return data
 	}
+	async function setAccountProfile(nickName, bio) {
+		await init()
+		var data = {
+			status: 0,
+			code: 0,
+		}
+		if ( !isLogin.value ) {
+			data.code = 3
+			return data
+		}
+		try {
+			const result = await apiPost("account/profile", {
+				nickName, bio
+			})
+			data.status = result.status
+			data.code = 1
+			return data
+		} catch (error) {
+			if (error.name == 'AxiosError') {
+				data.code = 2
+				data.status = error.response && error.response.status
+			} else {
+				throw error
+			}
+		}
+		return data
+	}
 	return {
 		config,
 		accountInfo,
@@ -412,6 +439,7 @@ export const useApiStore = defineStore('api', () => {
 		deletePost,
 		deleteComment,
 		getUserInfo,
-		getUserPost
+		getUserPost,
+		setAccountProfile
 	}
 })
