@@ -77,6 +77,7 @@ async function loadProfile() {
 }
 
 onMounted(async () => {
+	await api.init()
 	await loadProfile()
 	nextTick(async () => {
 		window.scrollTo(0, 0)

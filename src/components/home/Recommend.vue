@@ -22,7 +22,7 @@ const api = useApiStore()
 
 const recommends = recommendStore.recommends
 
-const isLoaded = ref(Boolean(recommends))
+const isLoaded = ref(Boolean(recommends.value))
 
 async function fetchRecommend() {
 	const result = await api.getRecommend(null, recommendStore.lastRecommend);
@@ -58,7 +58,6 @@ onMounted(async () =>{
 	nextTick(async () => {
 		window.scrollTo(0, homePageScrollStore.getPosition('recommend'))
 		await fetchRecommend()
-		isLoaded.value = true
 	})
 	window.addEventListener('scroll', onScroll)
 })
