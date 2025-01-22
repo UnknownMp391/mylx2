@@ -7,7 +7,7 @@ import { objectToQueryString, getCookie, setCookie } from '@/utils.js'
 
 export const useApiStore = defineStore('api', () => {
 	const tokenName = "mylxToken"
-	var endpoint = "https://mylx2-api.unknownmp.lol/"
+	var endpoint = "http://36.50.226.120:10097/"
 	if (import.meta.env.MODE === 'development') {
 		console.log('开发模式')
 		endpoint = "http://10.0.0.2:35501/"

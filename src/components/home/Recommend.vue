@@ -72,11 +72,11 @@ onBeforeUnmount(() => {
 
 <template>
 	<div v-if="isLoaded">
-		<mdui-card v-for="item in recommends" :key="item.postId">
-			<div v-if="item.title" style="font-size: 2em; margin: 10px" @click="router.push(`/post?postId=${item.postId}`)"><strong>{{ item.title }}</strong></div>
-			<AccountBar :avatarUrl="item.avatar" :name="escapeAndFormatText(item.authorInfo.nickName)"  @click="router.push(`/user?userId=${item.authorInfo.userId}`)"/>
-			<div class="typescale-label-small" style="margin: 6px 10px 0px; color: rgb(var(--mdui-color-on-surface-variant));" @click="router.push(`/post?postId=${item.postId}`)">{{ formatUnixTimestamp(item.createdAt) }}</div>
-			<div style="text-indent: 0em; margin: 10px;" @click="router.push(`/post?postId=${item.postId}`)">
+		<mdui-card v-for="item in recommends" :key="item.postId" @click="router.push(`/post?postId=${item.postId}`)">
+			<div v-if="item.title" style="font-size: 2em; margin: 10px"><strong>{{ item.title }}</strong></div>
+			<AccountBar :avatarUrl="item.avatar" :name="escapeAndFormatText(item.authorInfo.nickName)" />
+			<div class="typescale-label-small" style="margin: 6px 10px 0px; color: rgb(var(--mdui-color-on-surface-variant));">{{ formatUnixTimestamp(item.createdAt) }}</div>
+			<div style="text-indent: 0em; margin: 10px;">
 				<div style="white-space: pre-wrap;" v-html="escapeAndFormatText(item.content)"></div>
 			</div>
 		</mdui-card>
