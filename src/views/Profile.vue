@@ -44,6 +44,7 @@ onMounted(async () => {
 	if (api.isLogin) {
 		avatarUrl.value = await api.getAvatarUrl(api.accountInfo.avatar)
 		editNickName.value = nickName.value = api.accountInfo.nickName
+		editBio.value = api.accountInfo.bio
 	} else {
 		router.replace('/login')
 	}
@@ -58,7 +59,7 @@ onMounted(async () => {
 		<ProfileCard :avatarUrl="avatarUrl" :name="nickName" :loading="!isLoaded" />
 		<mdui-divider></mdui-divider>
 		<mdui-text-field label="昵称" v-model="editNickName" maxlength="50" counter :disabled="isApplying"></mdui-text-field>
-		<mdui-text-field label="个人介绍" v-model="bio" autosize min-row="1" max-row="4" maxlength="500" counter :disabled="isApplying"></mdui-text-field>
+		<mdui-text-field label="个人介绍" v-model="editBio" autosize min-row="1" max-row="4" maxlength="500" counter :disabled="isApplying"></mdui-text-field>
 		<div class="toolbar">
 			<mdui-button class="toolitem" variant="tonal" :disabled="isApplying">恢复</mdui-button>
 			<div style="flex: 1;" />

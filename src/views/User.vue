@@ -124,6 +124,7 @@ onBeforeUnmount(() => {
 		<mdui-divider style="margin: 0px auto 2px;"></mdui-divider>
 		<mdui-card v-for="(item, index) in posts" :key="item.postId">
 			<div v-if="item.title" style="font-size: 1.3em; margin: 10px" @click="router.push(`/post?postId=${item.postId}`)"><strong>{{ item.title }}</strong></div>
+			<br v-if="!item.title"/>
 			<div class="typescale-label-small" style="margin: 6px 10px 0px; color: rgb(var(--mdui-color-on-surface-variant));" @click="router.push(`/post?postId=${item.postId}`)">{{ formatUnixTimestamp(item.createdAt) }}</div>
 			<div style="text-indent: 0em; margin: 10px;" @click="router.push(`/post?postId=${item.postId}`)">
 				<div style="white-space: pre-wrap;" v-html="escapeAndFormatText(item.content)"></div>
