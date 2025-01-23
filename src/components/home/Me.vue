@@ -22,6 +22,7 @@ import '@mdui/icons/logout.js';
 
 import { mduiSnackbar, mduiAlert } from '@/utils.js'
 import ProfileCard from '../me/ProfileCard.vue'
+import AboutProject from '@/components/project/AboutProject.vue'
 import { useHomePageStore } from '@/stores/homePage.js'
 import { useApiStore } from '@/stores/api.js'
 const api = useApiStore()
@@ -89,7 +90,7 @@ onMounted(async () => {
 <template>
 	<ProfileCard :name="nickName" :avatarUrl="avatarUrl" :loading="!isLoaded" @click="redirectLogin()"/>
 	<div v-if="showAccountCard">
-		<mdui-card style="margin: 0px">
+		<mdui-card style="margin: 0px" class="rendered-card">
 			<!--<p><span style="font-size: 1.5em"><strong>喜欢,收藏</strong></span></p>-->
 			<div class="toolbar">
 				<div class="toolitem">
@@ -121,7 +122,7 @@ onMounted(async () => {
 				</div>
 			</div>
 		</mdui-card>
-		<mdui-card>
+		<mdui-card class="rendered-card">
 			<p><span style="font-size: 1.5em"><strong>账号管理</strong></span></p>
 			<mdui-button class="tool-button" variant="filled" full-width @click="router.push('/account/profile')">个人资料编辑</mdui-button>
 			<mdui-divider></mdui-divider>
@@ -137,11 +138,9 @@ onMounted(async () => {
 			</mdui-dropdown>
 		</mdui-card>
 	</div>
-	<mdui-card>
-		<p><span style="font-size: 1.5em"><strong>关于本项目</strong></span></p>
-		<div style="text-indent: 2em;">
-			<p>空</p>
-		</div>
+	<mdui-card >
+		<p><span style="font-size: 1.5em"><strong>关于本 项目 & 站点</strong></span></p>
+		<AboutProject />
 	</mdui-card>
 	<mdui-card>
 		<p><span style="font-size: 1.5em"><strong>开发路线 Road Map</strong></span></p>
@@ -163,7 +162,6 @@ onMounted(async () => {
 			<li></li>
 		</ul>
 	</mdui-card>
-
 	<mdui-card>
 		<p><span style="font-size: 1.5em"><strong>贡献列表</strong></span></p>
 		<p>项目规划: <a target="_blank" href="https://www.unknownmp.lol">UnknownMp</a></p>
@@ -197,5 +195,7 @@ onMounted(async () => {
 	margin: 10px 0px;
 	display: flex;
 }
-
+.rendered-card {
+	background-color: rgb(var(--mdui-color-secondary-container))
+}
 </style>

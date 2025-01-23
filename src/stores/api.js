@@ -128,6 +128,7 @@ export const useApiStore = defineStore('api', () => {
 			data.code = 1
 			if (result.status == 1) {
 				data.postId = result.postId
+				data.createdAt = result.createdAt
 			}
 		} catch (error) {
 			if (error.name == 'AxiosError') {

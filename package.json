@@ -12,6 +12,7 @@
     "deploy-cfp": "wrangler pages deploy dist/"
   },
   "dependencies": {
+    "@material/material-color-utilities": "^0.3.0",
     "@mdui/icons": "^1.0.2",
     "axios": "^1.7.9",
     "mdui": "^2.1.3",

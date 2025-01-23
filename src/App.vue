@@ -39,7 +39,7 @@ onMounted(async () => {
 <template>
 	<header></header>
 	<main class="smooth-mode-switch">
-		<mdui-top-app-bar class="top-bar" style="background-color: rgb(var(--mdui-color-surface-variant));" scroll-behavior="shrink elevate">
+		<mdui-top-app-bar class="top-bar" style="background-color: rgb(var(--mdui-color-primary-container));" scroll-behavior="shrink elevate">
 			<mdui-button-icon @click="$router.back()">
 				<mdui-icon-arrow-back></mdui-icon-arrow-back>
 			</mdui-button-icon>
@@ -63,7 +63,6 @@ main {
 	display: flex;
 	flex-direction: column;
 }
-
 
 </style>
 

@@ -51,12 +51,14 @@ async function post() {
 		} else {
 			avatar = `${api.config.ossEndpoint}/${api.config.defaultAvatarID}`
 		}
+		console.log(result.createdAt)
 		recommends.recommends.splice(0, 0, {
 			postId: result.postId,
 			title: editTemp.title,
 			content: editTemp.content,
 			authorInfo: api.accountInfo,
-			avatar: avatar
+			avatar: avatar,
+			createdAt: result.createdAt
 		})
 		setTimeout(() => {
 			router.replace(`/post?postId=${result.postId}`)

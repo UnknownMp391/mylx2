@@ -1,9 +1,9 @@
 <script setup>
-import { ref, onMounted, defineAsyncComponent, nextTick } from 'vue'
+import { ref, onMounted, onBeforeUnmount, defineAsyncComponent, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 
-//import { observeResize } from '@mdui/shared/helpers/observeResize.js'
-//import { breakpoint } from 'mdui/functions/breakpoint.js'
+import { observeResize } from '@mdui/shared/helpers/observeResize.js'
+import { breakpoint } from 'mdui/functions/breakpoint.js'
 //import { throttle } from 'mdui/functions/throttle.js'
 
 import 'mdui/components/navigation-bar.js'
@@ -11,8 +11,9 @@ import 'mdui/components/navigation-bar-item.js'
 import 'mdui/components/menu.js';
 import 'mdui/components/menu-item.js';
 import 'mdui/components/dropdown.js';
+import 'mdui/components/fab.js';
 //import '@mdui/icons/menu.js'
-//import '@mdui/icons/edit.js';
+import '@mdui/icons/edit.js';
 
 import '@mdui/icons/home.js'
 import '@mdui/icons/home--outlined.js'
@@ -22,7 +23,7 @@ import '@mdui/icons/person.js'
 import '@mdui/icons/person--outlined.js'
 
 import { getQueryVariable, mduiSnackbar } from '@/utils.js'
-
+import { useApiStore } from '@/stores/api.js'
 import { useHomePageStore, useRecommendStore } from '@/stores/homePage.js'
 const pages = {
 	home: defineAsyncComponent(() => import('../components/home/Recommend.vue')),
@@ -32,13 +33,15 @@ const pages = {
 }
 
 const router = useRouter()
-
+const api = useApiStore()
 const homeDropdown = ref(null)
-
+const fabExtended = ref(false)
 const queryVar = getQueryVariable('page')
 
 const recommendStore = useRecommendStore()
 const currentPage = useHomePageStore()
+const breakpointCondition = breakpoint();
+var observer = null;
 
 if (!currentPage.value) {
 	currentPage.value = 'home'
@@ -66,7 +69,16 @@ function refreshRecommends() {
 	})
 }
 
+observer = observeResize(document.body, function(entry, observer) {
+	fabExtended.value = breakpoint().up('md')
+})
+
 onMounted(async () => {
+	await api.init()
+})
+
+onBeforeUnmount(() => {
+	if (observer) observer.unobserve();
 })
 </script>
 
@@ -75,6 +87,7 @@ onMounted(async () => {
 		<div class="content">
 			<component :is="pages[currentPage.value]"></component>
 		</div>
+		<mdui-fab class="mdui-fab" v-if="api.isLogin" variant="tertiary" :extended="fabExtended" @click="router.push('/post/new')">立即创作<mdui-icon-edit slot="icon"></mdui-icon-edit></mdui-fab>
 		<mdui-navigation-bar class="navigation-bar smooth-mode-switch" v-model="currentPage.value">
 			<mdui-navigation-bar-item value="home" @click="switchPage('home')" @contextmenu.prevent="homeDropdown.open = true">	
 				<mdui-dropdown ref="homeDropdown" trigger="manual" placement="top-start">
@@ -104,7 +117,17 @@ onMounted(async () => {
 <style scope>
 
 .navigation-bar {
-	background-color: rgb(var(--mdui-color-surface-variant));
+	background-color: rgb(var(--mdui-color-primary-container));
+    position: fixed; /* 固定导航栏 */
+    width: 100%; /* 水平充满屏幕 */
+    z-index: 999; /* 确保导航栏在其他内容上方 */
+}
+
+.mdui-fab {
+    position: fixed;
+    bottom: 90px; /* 调整垂直位置 */
+    right: 10px; /* 调整水平位置 */
+    z-index: 1000; /* 确保悬浮按钮在其他内容上方 */
 }
 
 </style>

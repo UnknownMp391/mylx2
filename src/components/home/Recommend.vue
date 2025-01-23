@@ -72,7 +72,7 @@ onBeforeUnmount(() => {
 
 <template>
 	<div v-if="isLoaded">
-		<mdui-card v-for="item in recommends" :key="item.postId" @click="router.push(`/post?postId=${item.postId}`)">
+		<mdui-card v-for="item in recommends" :key="item.postId" @click="router.push(`/post?postId=${item.postId}`)" class="recommend-card">
 			<div v-if="item.title" style="font-size: 2em; margin: 10px"><strong>{{ item.title }}</strong></div>
 			<AccountBar :avatarUrl="item.avatar" :name="escapeAndFormatText(item.authorInfo.nickName)" />
 			<div class="typescale-label-small" style="margin: 6px 10px 0px; color: rgb(var(--mdui-color-on-surface-variant));">{{ formatUnixTimestamp(item.createdAt) }}</div>
@@ -87,5 +87,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scope>
-
+.recommend-card {
+	background-color: rgb(var(--mdui-color-surface-variant));
+}
 </style>
