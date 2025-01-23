@@ -27,6 +27,7 @@ mdui-text-field {
 	margin: 10px auto 0; /* 居中工具栏 */
 	background-color: rgb(var(--mdui-background-color));
 	padding: 0px; /* 内边距 */
+	user-select: none;
 }
 .toolitem {
 	flex: 1; /* 每个项目占用相同宽度 */
@@ -53,6 +54,7 @@ mdui-text-field {
 .bar {
 	display: flex;
 	flex-direction: row;
+	user-select: none;
 }
 
 .load-progress {
