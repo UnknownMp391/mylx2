@@ -40,15 +40,25 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			output: {
-				manualChunks(id) {
+				/*manualChunks(id) {
 					if (id.includes('node_modules')) {
 						return 'vendor';
 					}
+				}*/
+				manualChunks(id) {
+					if (id.includes('node_modules')) {
+						const modules = id.toString().split('node_modules/')[1];
+						const moduleName = modules.split('/')[0];
+						return `vendor-${moduleName}`;
+					}
 				}
 			}
-		}
+		},
+		minify: true,
+		assetsInlineLimit: 0,
+		reportCompressedSize: false
 	},
 	server: {
 		host: '0.0.0.0'
-	}
+	},
 })

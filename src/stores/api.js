@@ -114,7 +114,7 @@ export const useApiStore = defineStore('api', () => {
 		}
 		return data
 	}
-	async function postNew(content, title, collectionId) {
+	async function postNew(content, title, collectionId, imageList) {
 		await init()
 		var data = {
 			status: 0,
@@ -122,7 +122,7 @@ export const useApiStore = defineStore('api', () => {
 		}
 		try {
 			const result = await apiPost("post/new",{
-				title, content, collectionId
+				title, content, collectionId, imageList
 			})
 			data.status = result.status
 			data.code = 1
@@ -423,6 +423,42 @@ export const useApiStore = defineStore('api', () => {
 		}
 		return data
 	}
+	async function uploadImage(file, onUploadProgress) {
+		await init()
+		var data = {
+			status: 0,
+			code: 0,
+		}
+		if ( !isLogin.value ) {
+			data.code = 3
+			return data
+		}
+		try {
+			const formData = new FormData();
+			formData.append('file', file);
+			try {
+				const response = await axios.post(`${endpoint}upload/image`, formData, {
+				    headers: {
+				        'Content-Type': 'multipart/form-data',
+				        token,
+				    },
+				    onUploadProgress
+				});
+				return response.data;
+			} catch (error) {
+				console.error("[MYLX] Upload failed:", error);
+				return { status: -1, error: error.message };
+			}
+		} catch (error) {
+			if (error.name == 'AxiosError') {
+				data.code = 2
+				data.status = error.response && error.response.status
+			} else {
+				throw error
+			}
+		}
+		return data
+	}
 	return {
 		config,
 		accountInfo,
@@ -442,6 +478,7 @@ export const useApiStore = defineStore('api', () => {
 		deleteComment,
 		getUserInfo,
 		getUserPost,
-		setAccountProfile
+		setAccountProfile,
+		uploadImage
 	}
 })

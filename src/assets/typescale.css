@@ -19,3 +19,17 @@
 	font-weight: var(--mdui-typescale-label-small-weight);
 }
 
+.typescale-headline-small {
+	line-height: var(--mdui-typescale-headline-small-line-height);
+	font-size: var(--mdui-typescale-headline-small-size);
+	letter-spacing: var(--mdui-typescale-headline-small-tracking);
+	font-weight: var(--mdui-typescale-headline-small-weight);
+}
+
+.typescale-headline-large {
+	line-height: var(--mdui-typescale-headline-large-line-height);
+	font-size: var(--mdui-typescale-headline-large-size);
+	letter-spacing: var(--mdui-typescale-headline-large-tracking);
+	font-weight: var(--mdui-typescale-headline-large-weight);
+}
+
