@@ -25,6 +25,7 @@ import '@mdui/icons/person--outlined.js'
 import { getQueryVariable, mduiSnackbar } from '@/utils.js'
 import { useApiStore } from '@/stores/api.js'
 import { useHomePageStore, useRecommendStore } from '@/stores/homePage.js'
+import { useAppSettingsStore } from '@/stores/appSettings.js'
 const pages = {
 	home: defineAsyncComponent(() => import('../components/home/Recommend.vue')),
 	favorite: defineAsyncComponent(() => import('../components/home/Favorite.vue')),
@@ -34,6 +35,7 @@ const pages = {
 
 const router = useRouter()
 const api = useApiStore()
+const appSettings = useAppSettingsStore()
 const homeDropdown = ref(null)
 const fabExtended = ref(false)
 const queryVar = getQueryVariable('page')
@@ -76,10 +78,6 @@ observer = observeResize(document.body, function(entry, observer) {
 onMounted(async () => {
 	await api.init()
 })
-
-onBeforeUnmount(() => {
-	if (observer) observer.unobserve();
-})
 </script>
 
 <template>
@@ -87,7 +85,7 @@ onBeforeUnmount(() => {
 		<div class="content">
 			<component :is="pages[currentPage.value]"></component>
 		</div>
-		<mdui-fab class="mdui-fab" v-if="api.isLogin" variant="tertiary" :extended="fabExtended" @click="router.push('/post/new')">立即创作<mdui-icon-edit slot="icon"></mdui-icon-edit></mdui-fab>
+		<mdui-fab class="mdui-fab" v-show="api.isLogin && appSettings.showFab" variant="tertiary" :extended="fabExtended" @click="router.push('/post/new')">立即创作<mdui-icon-edit slot="icon"></mdui-icon-edit></mdui-fab>
 		<mdui-navigation-bar class="navigation-bar smooth-mode-switch" v-model="currentPage.value">
 			<mdui-navigation-bar-item value="home" @click="switchPage('home')" @contextmenu.prevent="homeDropdown.open = true">	
 				<mdui-dropdown ref="homeDropdown" trigger="manual" placement="top-start">
@@ -128,6 +126,18 @@ onBeforeUnmount(() => {
     bottom: 90px; /* 调整垂直位置 */
     right: 10px; /* 调整水平位置 */
     z-index: 1000; /* 确保悬浮按钮在其他内容上方 */
+    animation: slideInFromRight var(--mdui-motion-duration-medium2) var(--mdui-motion-easing-standard); /* 动画时长和缓动效果 */
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%); /* 初始位置在屏幕右侧 */
+        opacity: 1; /* 初始透明 */
+    }
+    to {
+        transform: translateX(0); /* 移入到目标位置 */
+        opacity: 1; /* 完全显示 */
+    }
 }
 
 </style>

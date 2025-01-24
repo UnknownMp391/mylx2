@@ -3,10 +3,21 @@ import { defineStore } from 'pinia'
 
 import { setTheme } from 'mdui/functions/setTheme.js'
 import { setColorScheme } from 'mdui/functions/setColorScheme.js'
+import { useAppSettingsStore } from '@/stores/appSettings.js'
 
 export const useThemeStore = defineStore('homePage', () => {
+	const appSettings = useAppSettingsStore()
+	const mode = ref('auto')
 	// 定义响应式状态
-	const mode = ref('auto') // 默认主题
+	if (appSettings.autoDarkMode) {
+		mode.value = 'auto'
+	} else {
+		if (appSettings.darkMode) {
+			mode.value = 'dark'
+		} else {
+			mode.value = 'light'
+		}
+	}
 	const color = ref('#7F3C5C70') // 默认颜色
 
 	// 定义 actions

@@ -10,6 +10,7 @@ import 'mdui/components/button.js';
 import 'mdui/components/dropdown.js';
 import 'mdui/components/menu.js';
 import 'mdui/components/menu-item.js';
+import 'mdui/components/switch.js';
 
 import '@mdui/icons/history.js';
 import '@mdui/icons/bookmarks.js';
@@ -25,15 +26,20 @@ import ProfileCard from '../me/ProfileCard.vue'
 import AboutProject from '@/components/project/AboutProject.vue'
 import { useHomePageStore } from '@/stores/homePage.js'
 import { useApiStore } from '@/stores/api.js'
+import { useAppSettingsStore } from '@/stores/appSettings.js'
+
 const api = useApiStore()
 const router = useRouter()
 const homePage = useHomePageStore()
+const appSettings = useAppSettingsStore()
 
 const isLoaded = ref(false)
 var nickName = ref('')
 const avatarUrl = ref('/favicon.png')
 const showAccountCard = ref(false)
-
+const settingsShowFab = ref(null)
+const settingsDarkMode = ref(null)
+const settingsAutoDarkMode = ref(null)
 function redirectLogin() {
 	if(isLoaded && !api.isLogin) {
 		router.push('/login')
@@ -80,6 +86,9 @@ async function loadProfile() {
 onMounted(async () => {
 	await api.init()
 	await loadProfile()
+	if ( appSettings.showFab ) {
+		settingsShowFab.checked = 'checked'
+	}
 	nextTick(async () => {
 		window.scrollTo(0, 0)
 	})
@@ -138,6 +147,15 @@ onMounted(async () => {
 			</mdui-dropdown>
 		</mdui-card>
 	</div>
+	<mdui-card>
+		<p><span style="font-size: 1.5em"><strong>设置 (本地存储)</strong></span></p>
+		<div class="settings">
+			<div>显示Fab (浮动操作按钮)<div style="flex: 1;"/><mdui-switch ref="settingsShowFab" :checked="appSettings.showFab" @input="appSettings.changed = true" @change="appSettings.showFab = Boolean(settingsShowFab.checked)"></mdui-switch></div>
+			<div>自动暗色模式<div style="flex: 1;"/><mdui-switch ref="settingsAutoDarkMode" :checked="appSettings.autoDarkMode" @input="appSettings.changed = true" @change="appSettings.autoDarkMode = Boolean(settingsAutoDarkMode.checked)"></mdui-switch></div>
+			<div v-if="!appSettings.autoDarkMode">默认暗色模式<div style="flex: 1;"/><mdui-switch ref="settingsDarkMode" :checked="appSettings.darkMode" @input="appSettings.changed = true" @change="appSettings.darkMode = Boolean(settingsDarkMode.checked)"></mdui-switch></div>
+			<div style="margin: 10px 0px"><div v-if="appSettings.changed" style="color: rgb(var(--mdui-color-error));">警告: 未应用的更改</div><div style="flex: 1;"/><mdui-button @click="appSettings.apply(); appSettings.changed = false">应用</mdui-button></div>
+		</div>
+	</mdui-card>
 	<mdui-card >
 		<p><span style="font-size: 1.5em"><strong>关于本 项目 & 站点</strong></span></p>
 		<AboutProject />
@@ -197,5 +215,9 @@ onMounted(async () => {
 }
 .rendered-card {
 	background-color: rgb(var(--mdui-color-secondary-container))
+}
+.settings div {
+	display: flex;
+	align-items: center;
 }
 </style>
