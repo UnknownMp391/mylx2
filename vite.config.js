@@ -18,7 +18,7 @@ export default defineConfig({
 		}),
 		vueJsx(),
 		vueDevTools(),
-		/*VitePWA({
+		VitePWA({
 			name: '墨宇留香 - 渐进式 Web App 版本',
 			short_name: '墨宇留香',
 			start_url: '/index.html',
@@ -30,7 +30,7 @@ export default defineConfig({
 					"src": "/favicon.png",
 					"sizes": "507x580",
 					"type": "image/png"
-		}]})*/
+		}]})
 	],
 	resolve: {
 		alias: {
@@ -49,7 +49,7 @@ export default defineConfig({
 					if (id.includes('node_modules')) {
 						const modules = id.toString().split('node_modules/')[1];
 						const moduleName = modules.split('/')[0];
-						return `vendor-${moduleName}`;
+						return `vendor/${moduleName}`;
 					}
 				}
 			}
