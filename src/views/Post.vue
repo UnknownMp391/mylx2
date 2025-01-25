@@ -38,6 +38,8 @@ const authorId = ref(0)
 const createdAt = ref(0)
 const content = ref('')
 const title = ref('')
+const images = ref([])
+const swiper = ref(null)
 
 const comment = ref('')
 const comments = ref([])
@@ -45,6 +47,10 @@ const lastComment = ref(0)
 const moreComment = ref(true)
 
 const postId = getQueryVariable('postId')
+
+function onSlideChange(event) {
+	console.log(swiper.value)
+}
 
 async function onComment() {
 	if ( comment.value == '' ) { return }
@@ -111,6 +117,9 @@ onMounted(async () => {
 			authorName.value = post.authorInfo.nickName
 			authorId.value = post.authorInfo.userId
 			createdAt.value = post.createdAt
+			post.images.forEach((image) => {
+				images.value.splice(0, 0, `${api.config.ossEndpoint}/${image}`)
+			})
 			if ( post.authorInfo.avatar ) {
 				authorAvatarUrl.value = `${api.config.ossEndpoint}/${post.authorInfo.avatar}`
 			} else {
@@ -143,6 +152,9 @@ onMounted(async () => {
 		<div style="text-indent: 0em; margin: 10px;">
 			<div style="white-space: pre-wrap;" v-html="content"></div>
 		</div><br/>
+		<div v-for="image in images" style="margin: 10px; display: flex; justify-content: center; align-items: center;">
+			<img class="post-image" :src="image" />
+		</div>
 		<mdui-card v-if="api.config.isLogin">
 			<mdui-text-field v-model="comment" autosize min-rows="1" max-rows="4" label="来条评论吧😋" maxlength="500" counter :disabled="isCommenting"></mdui-text-field>
 			<div class="bar" style="margin: 10px 0px;">
@@ -185,5 +197,9 @@ onMounted(async () => {
 
 
 <style scope>
-
+.post-image {
+    width: 100%;
+    height: auto;
+    margin: 10px;
+}
 </style>

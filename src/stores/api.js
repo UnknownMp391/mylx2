@@ -209,6 +209,7 @@ export const useApiStore = defineStore('api', () => {
 				data.title = result.title
 				data.createdAt = result.createdAt
 				data.authorInfo = result.authorInfo
+				data.images = result.images
 			}
 		} catch (error) {
 			if (error.name == 'AxiosError') {
